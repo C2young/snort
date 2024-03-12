@@ -1,0 +1,24 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+#undef PACKAGE
+#undef VERSION
+#undef BSDI
+#undef FREEBSD
+#undef IRIX
+#undef LINUX
+#undef OPENBSD
+#undef PCAP_TIMEOUT_IGNORED
+#undef SOLARIS
+#undef STUPID_SOLARIS_CHECKSUM_BUG
+
+/* Define if you have the m library (-lm).  */
+#undef HAVE_LIBM
+
+/* Define if you have the nsl library (-lnsl).  */
+#undef HAVE_LIBNSL
+
+/* Define if you have the pcap library (-lpcap).  */
+#undef HAVE_LIBPCAP
+
+/* Define if you have the socket library (-lsocket).  */
+#undef HAVE_LIBSOCKET

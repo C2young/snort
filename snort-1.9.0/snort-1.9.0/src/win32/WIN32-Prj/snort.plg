@@ -1,0 +1,183 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: snort - Win32 MSSQL Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP10.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "..\Win32-Includes" /I "..\\" /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /D __BEGIN_DECLS="" /D __END_DECLS="" /D "HAVE_CONFIG_H" /D "ENABLE_MSSQL" /FR"snort___Win32_MSSQL_Release/" /Fp"snort___Win32_MSSQL_Release/snort.pch" /YX"snort.pch" /Fo"snort___Win32_MSSQL_Release/" /Fd"snort___Win32_MSSQL_Release/" /FD /c 
+"E:\cvsroot\snort\spp_minfrag.c"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP10.tmp" 
+Creating temporary file "C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP11.tmp" with contents
+[
+user32.lib wsock32.lib libpcap.lib advapi32.lib Ntwdblib.lib /nologo /subsystem:console /incremental:no /pdb:"snort___Win32_MSSQL_Release/snort.pdb" /machine:I386 /out:"snort___Win32_MSSQL_Release/snort.exe" /libpath:"..\Win32-Libraries" 
+".\snort___Win32_MSSQL_Release\avl_tree.obj"
+".\snort___Win32_MSSQL_Release\checksum.obj"
+".\snort___Win32_MSSQL_Release\codes.obj"
+".\snort___Win32_MSSQL_Release\debug.obj"
+".\snort___Win32_MSSQL_Release\decode.obj"
+".\snort___Win32_MSSQL_Release\log.obj"
+".\snort___Win32_MSSQL_Release\mstring.obj"
+".\snort___Win32_MSSQL_Release\parser.obj"
+".\snort___Win32_MSSQL_Release\plugbase.obj"
+".\snort___Win32_MSSQL_Release\rules.obj"
+".\snort___Win32_MSSQL_Release\snort.obj"
+".\snort___Win32_MSSQL_Release\snprintf.obj"
+".\snort___Win32_MSSQL_Release\sp_dsize_check.obj"
+".\snort___Win32_MSSQL_Release\sp_icmp_code_check.obj"
+".\snort___Win32_MSSQL_Release\sp_icmp_id_check.obj"
+".\snort___Win32_MSSQL_Release\sp_icmp_seq_check.obj"
+".\snort___Win32_MSSQL_Release\sp_icmp_type_check.obj"
+".\snort___Win32_MSSQL_Release\sp_ip_fragbits.obj"
+".\snort___Win32_MSSQL_Release\sp_ip_id_check.obj"
+".\snort___Win32_MSSQL_Release\sp_ip_proto.obj"
+".\snort___Win32_MSSQL_Release\sp_ip_same_check.obj"
+".\snort___Win32_MSSQL_Release\sp_ip_tos_check.obj"
+".\snort___Win32_MSSQL_Release\sp_ipoption_check.obj"
+".\snort___Win32_MSSQL_Release\sp_pattern_match.obj"
+".\snort___Win32_MSSQL_Release\sp_priority.obj"
+".\snort___Win32_MSSQL_Release\sp_react.obj"
+".\snort___Win32_MSSQL_Release\sp_reference.obj"
+".\snort___Win32_MSSQL_Release\sp_respond.obj"
+".\snort___Win32_MSSQL_Release\sp_rpc_check.obj"
+".\snort___Win32_MSSQL_Release\sp_session.obj"
+".\snort___Win32_MSSQL_Release\sp_tcp_ack_check.obj"
+".\snort___Win32_MSSQL_Release\sp_tcp_flag_check.obj"
+".\snort___Win32_MSSQL_Release\sp_tcp_seq_check.obj"
+".\snort___Win32_MSSQL_Release\sp_tcp_win_check.obj"
+".\snort___Win32_MSSQL_Release\sp_ttl_check.obj"
+".\snort___Win32_MSSQL_Release\spo_alert_fast.obj"
+".\snort___Win32_MSSQL_Release\spo_alert_full.obj"
+".\snort___Win32_MSSQL_Release\spo_alert_smb.obj"
+".\snort___Win32_MSSQL_Release\spo_alert_syslog.obj"
+".\snort___Win32_MSSQL_Release\spo_alert_unixsock.obj"
+".\snort___Win32_MSSQL_Release\spo_csv.obj"
+".\snort___Win32_MSSQL_Release\spo_database.obj"
+".\snort___Win32_MSSQL_Release\spo_log_tcpdump.obj"
+".\snort___Win32_MSSQL_Release\spo_unified.obj"
+".\snort___Win32_MSSQL_Release\spo_xml.obj"
+".\snort___Win32_MSSQL_Release\spp_anomsensor.obj"
+".\snort___Win32_MSSQL_Release\spp_arpspoof.obj"
+".\snort___Win32_MSSQL_Release\spp_bo.obj"
+".\snort___Win32_MSSQL_Release\spp_defrag.obj"
+".\snort___Win32_MSSQL_Release\spp_frag2.obj"
+".\snort___Win32_MSSQL_Release\spp_http_decode.obj"
+".\snort___Win32_MSSQL_Release\spp_minfrag.obj"
+".\snort___Win32_MSSQL_Release\spp_portscan.obj"
+".\snort___Win32_MSSQL_Release\spp_rpc_decode.obj"
+".\snort___Win32_MSSQL_Release\spp_stream4.obj"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream.obj"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream2.obj"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream3.obj"
+".\snort___Win32_MSSQL_Release\spp_telnet_negotiation.obj"
+".\snort___Win32_MSSQL_Release\spp_unidecode.obj"
+".\snort___Win32_MSSQL_Release\strlcatu.obj"
+".\snort___Win32_MSSQL_Release\strlcpyu.obj"
+".\snort___Win32_MSSQL_Release\tag.obj"
+".\snort___Win32_MSSQL_Release\ubi_BinTree.obj"
+".\snort___Win32_MSSQL_Release\ubi_SplayTree.obj"
+".\snort___Win32_MSSQL_Release\getopt.obj"
+".\snort___Win32_MSSQL_Release\misc.obj"
+".\snort___Win32_MSSQL_Release\syslog.obj"
+".\snort___Win32_MSSQL_Release\name.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP11.tmp"
+<h3>Output Window</h3>
+Compiling...
+spp_minfrag.c
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\math.h(174) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\io.h(175) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\io.h(176) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\io.h(176) : warning C4028: formal parameter 2 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\io.h(181) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\io.h(244) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\process.h(145) : warning C4028: formal parameter 1 different from declaration
+D:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\process.h(174) : warning C4028: formal parameter 1 different from declaration
+Linking...
+LINK : warning LNK4089: all references to "USER32.dll" discarded by /OPT:REF
+Creating temporary file "C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP13.tmp" with contents
+[
+/nologo /o"snort___Win32_MSSQL_Release/snort.bsc" 
+".\snort___Win32_MSSQL_Release\avl_tree.sbr"
+".\snort___Win32_MSSQL_Release\checksum.sbr"
+".\snort___Win32_MSSQL_Release\codes.sbr"
+".\snort___Win32_MSSQL_Release\debug.sbr"
+".\snort___Win32_MSSQL_Release\decode.sbr"
+".\snort___Win32_MSSQL_Release\log.sbr"
+".\snort___Win32_MSSQL_Release\mstring.sbr"
+".\snort___Win32_MSSQL_Release\parser.sbr"
+".\snort___Win32_MSSQL_Release\plugbase.sbr"
+".\snort___Win32_MSSQL_Release\rules.sbr"
+".\snort___Win32_MSSQL_Release\snort.sbr"
+".\snort___Win32_MSSQL_Release\snprintf.sbr"
+".\snort___Win32_MSSQL_Release\sp_dsize_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_icmp_code_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_icmp_id_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_icmp_seq_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_icmp_type_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_ip_fragbits.sbr"
+".\snort___Win32_MSSQL_Release\sp_ip_id_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_ip_proto.sbr"
+".\snort___Win32_MSSQL_Release\sp_ip_same_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_ip_tos_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_ipoption_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_pattern_match.sbr"
+".\snort___Win32_MSSQL_Release\sp_priority.sbr"
+".\snort___Win32_MSSQL_Release\sp_react.sbr"
+".\snort___Win32_MSSQL_Release\sp_reference.sbr"
+".\snort___Win32_MSSQL_Release\sp_respond.sbr"
+".\snort___Win32_MSSQL_Release\sp_rpc_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_session.sbr"
+".\snort___Win32_MSSQL_Release\sp_tcp_ack_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_tcp_flag_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_tcp_seq_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_tcp_win_check.sbr"
+".\snort___Win32_MSSQL_Release\sp_ttl_check.sbr"
+".\snort___Win32_MSSQL_Release\spo_alert_fast.sbr"
+".\snort___Win32_MSSQL_Release\spo_alert_full.sbr"
+".\snort___Win32_MSSQL_Release\spo_alert_smb.sbr"
+".\snort___Win32_MSSQL_Release\spo_alert_syslog.sbr"
+".\snort___Win32_MSSQL_Release\spo_alert_unixsock.sbr"
+".\snort___Win32_MSSQL_Release\spo_csv.sbr"
+".\snort___Win32_MSSQL_Release\spo_database.sbr"
+".\snort___Win32_MSSQL_Release\spo_log_tcpdump.sbr"
+".\snort___Win32_MSSQL_Release\spo_unified.sbr"
+".\snort___Win32_MSSQL_Release\spo_xml.sbr"
+".\snort___Win32_MSSQL_Release\spp_anomsensor.sbr"
+".\snort___Win32_MSSQL_Release\spp_arpspoof.sbr"
+".\snort___Win32_MSSQL_Release\spp_bo.sbr"
+".\snort___Win32_MSSQL_Release\spp_defrag.sbr"
+".\snort___Win32_MSSQL_Release\spp_frag2.sbr"
+".\snort___Win32_MSSQL_Release\spp_http_decode.sbr"
+".\snort___Win32_MSSQL_Release\spp_minfrag.sbr"
+".\snort___Win32_MSSQL_Release\spp_portscan.sbr"
+".\snort___Win32_MSSQL_Release\spp_rpc_decode.sbr"
+".\snort___Win32_MSSQL_Release\spp_stream4.sbr"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream.sbr"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream2.sbr"
+".\snort___Win32_MSSQL_Release\spp_tcp_stream3.sbr"
+".\snort___Win32_MSSQL_Release\spp_telnet_negotiation.sbr"
+".\snort___Win32_MSSQL_Release\spp_unidecode.sbr"
+".\snort___Win32_MSSQL_Release\strlcatu.sbr"
+".\snort___Win32_MSSQL_Release\strlcpyu.sbr"
+".\snort___Win32_MSSQL_Release\tag.sbr"
+".\snort___Win32_MSSQL_Release\ubi_BinTree.sbr"
+".\snort___Win32_MSSQL_Release\ubi_SplayTree.sbr"
+".\snort___Win32_MSSQL_Release\getopt.sbr"
+".\snort___Win32_MSSQL_Release\misc.sbr"
+".\snort___Win32_MSSQL_Release\syslog.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Chris\LOCALS~1\Temp\RSP13.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+snort.exe - 0 error(s), 9 warning(s)
+</pre>
+</body>
+</html>

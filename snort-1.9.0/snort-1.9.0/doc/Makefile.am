@@ -1,0 +1,9 @@
+## $Id: Makefile.am,v 1.5 2002/06/28 19:38:55 chrisgreen Exp $
+AUTOMAKE_OPTIONS=foreign no-dependencies
+
+EXTRA_DIST = AUTHORS NEWS README.csv BUGS README README.database \
+CREDITS README.SNMP README.xml README.FLEXRESP RULES.todo FAQ \
+SnortUsersManual.pdf INSTALL README.PLUGINS USAGE 
+
+
+

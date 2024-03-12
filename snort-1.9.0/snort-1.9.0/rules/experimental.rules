@@ -1,0 +1,176 @@
+# (C) Copyright 2001,2002, Martin Roesch, Brian Caswell, et al.
+#    All rights reserved.
+# $Id: experimental.rules,v 1.64 2002/09/17 18:38:10 roesch Exp $
+# ---------------
+# EXPERIMENTAL RULES
+# ---------------
+# These signatures are experimental, new and may trigger way too often.
+#
+# Be forwarned, this is our testing ground.  We put new signatures here for
+# testing before incorporating them into the default signature set.  This is
+# for bleeding edge stuff only.
+#
+
+alert ip 63.251.224.177 any -> $HOME_NET any (msg:"EXPERIMENTAL poll.gotomypc.com access"; reference:url,www.gotomypc.com/help2.tmpl; classtype:misc-activity; sid:1429; rev:1;)
+
+# once we get response, check for content:"|03|"; offset:0; depth:1;
+alert tcp $EXTERNAL_NET any -> $HOME_NET 3389 (msg:"EXPERIMENTAL MS Terminal server request (RDP)"; content:"|03 00 00 0b 06 E0 00 00 00 00 00|"; offset:0; depth:11; flow:to_server,established; reference:cve,CAN-2001-0540; classtype:protocol-command-decode; sid:1447;  rev:3;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 3389 (msg:"EXPERIMENTAL MS Terminal server request"; content:"|03 00 00|"; offset:0; depth:3; content:"|e0 00 00 00 00 00|"; offset:5; depth:6; flow:to_server,established; reference:cve,CAN-2001-0540; classtype:protocol-command-decode; sid:1448;  rev:3;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 7001 (msg:"EXPERIMENTAL MISC AFS access"; content:"|00 00 03 e7 00 00 00 00 00 00 00 65 00 00 00 00 00 00 00 00 0d 05 00 00 00 00 00 00 00|"; reference:nessus,10441; classtype:misc-activity; sid:1504; rev:4;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 80 (msg:"EXPERIMENTAL DOS cisco attempt"; flow:to_server,established; content:"|13|"; dsize:1; classtype:web-application-attack; sid:1545;  rev:3;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 6004 (msg:"EXPERIMENTAL MISC iParty DOS attempt"; flow:to_server,established; content:"|FF FF FF FF FF FF|"; offset:0; classtype:misc-attack; reference:cve,CAN-1999-1566; sid:1605;  rev:2;)
+
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 32000 (msg:"MISC Xtramail Username overflow attempt"; flow:to_server,established; dsize:>500; content:"Username\: "; nocase; reference:cve,CAN-1999-1511; reference:bugtraq,791; classtype:attempted-admin; sid:1636;  rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"EXPERIMENTAL SCAN SSH Version map attempt"; flow:to_server,established; content:"Version_Mapper"; nocase; classtype:network-scan; sid:1638; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 6789:6790 (msg:"EXPERIMENTAL DOS DB2 dos attempt"; flow:to_server,established; dsize:1; classtype:denial-of-service; sid:1641;  rev:3;)
+alert udp $EXTERNAL_NET any -> $HOME_NET 500 (msg:"EXPERIMENTAL MISC IPSec PGPNet connection attempt"; content:"|00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 10 02 00 00 00 00 00 00 00 00 88 0D 00 00 5C 00 00 00 01 00 00 00 01 00 00 00 50 01 01 00 02 03 00 00 24 01 01 00 00 80 01 00 06 80 02 00 02 80 03 00 03 80 04 00 05 80 0B 00 01 00 0C 00 04 00 01 51 80 00 00 00 24 02 01 00 00 80 01 00 05 80 02 00 01 80 03 00 03 80 04 00 02 80 0B 00 01 00 0C 00 04 00 01 51 80 00 00 00 10|"; classtype:protocol-command-decode; sid:1771; rev:2;)
+alert ip any any -> 216.80.99.202 any (msg:"EXPERIMENTAL TROJAN fragroute trojan connection attempt"; reference:bugtraq,4898; classtype:trojan-activity; sid:1791; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS .asp HTTP header buffer overflow attempt"; flow:to_server,established; content:"HTTP|2F|"; nocase; uricontent:".asp"; nocase; content:"|3A|"; content:"|0A|"; content:"|00|"; reference:bugtraq,4476; classtype:web-application-attack; sid:1801; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS .asa HTTP header buffer overflow attempt"; flow:to_server,established; content:"HTTP|2F|"; nocase; uricontent:".asa"; nocase; content:"|3A|"; content:"|0A|"; content:"|00|"; reference:bugtraq,4476; classtype:web-application-attack; sid:1802; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS .cer HTTP header buffer overflow attempt"; flow:to_server,established; content:"HTTP|2F|"; nocase; uricontent:".cer"; nocase; content:"|3A|"; content:"|0A|"; content:"|00|"; reference:bugtraq,4476; classtype:web-application-attack; sid:1803; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS .cdx HTTP header buffer overflow attempt"; flow:to_server,established; content:"HTTP|2F|"; nocase; uricontent:".cdx"; nocase; content:"|3A|"; content:"|0A|"; content:"|00|"; reference:bugtraq,4476; classtype:web-application-attack; sid:1804; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC apache chunked encoding memory corruption exploit attempt"; flow:established,to_server; content:"|C0 50 52 89 E1 50 51 52 50 B8 3B 00 00 00 CD 80|"; reference:bugtraq,5033; reference:cve,CAN-2002-0392; classtype:web-application-activity; sid:1808; rev:2;)
+alert tcp $HOME_NET 22 -> $EXTERNAL_NET any (msg:"EXPERIMENTAL MISC successful gobbles ssh exploit (GOBBLE)"; flow:from_server,established; content:"|2a|GOBBLE|2a|"; reference:bugtraq,5093; classtype:misc-attack; sid:1810; rev:1;)
+alert tcp $HOME_NET 22 -> $EXTERNAL_NET any (msg:"EXPERIMENTAL MISC successful gobbles ssh exploit (uname)"; flow:from_server,established; content:"uname"; reference:bugtraq,5093; classtype:misc-attack; sid:1811; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 22 (msg:"EXPERIMENTAL MISC gobbles SSH exploit attempt"; flow:to_server,established; content:"GOBBLES"; reference:bugtraq,5093; classtype:misc-attack; sid:1812; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC CISCO VoIP DOS ATTEMPT"; flow:to_server,established; uricontent:"/StreamingStatistics"; reference:bugtraq,4794; classtype:misc-attack; sid:1814; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-PHP directory.php arbitrary command attempt"; flow:to_server,established; uricontent:"/directory.php"; content:"dir="; content:"\;"; reference:bugtraq,4278; reference:cve,CAN-2002-0434; classtype:misc-attack; sid:1815; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-PHP directory.php access"; flow:to_server,established; uricontent:"/directory.php"; reference:bugtraq,4278; reference:cve,CAN-2002-0434; classtype:misc-attack; sid:1816; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS MS Site Server default login attempt"; flow:to_server,established; uricontent:"/SiteServer/Admin/knowledge/persmbr/"; nocase; content:"Authorization\: Basic TERBUF9Bbm9ueW1vdXM6TGRhcFBhc3N3b3JkXzE="; classtype:web-application-attack; reference:nessus,11018; sid:1817; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-IIS MS Site Server admin attempt"; flow:to_server,established; uricontent:"/SiteServer/Admin/knowledge/persmbr/"; nocase; reference:nessus,11018; classtype:web-application-attack; sid:1818; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 2533 (msg:"EXPERIMENTAL Alcatel PABX 4400 connection attempt"; flow:established,to_server; content:"|000143|"; offset:0; depth:3; classtype:misc-activity; reference:nessus,11019; sid:1819; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC IBM Net.Commerce orderdspc.d2w access"; flow:established,to_server; uricontent:"/ncommerce3/ExecMacro/orderdspc.d2w"; reference:cve,CVE-2001-0319; reference:nessus,11020; classtype:web-application-activity; sid:1820; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 515 (msg:"EXPERIMENTAL LPD dvips remote command execution attempt"; flow:to_server,established; content:"psfile=|2260|"; reference:cve,CVE-2001-1002; reference:nessus,11023; classtype:system-call-detect; sid:1821; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI alienform.cgi directory traversal attempt"; flow:established,to_server; uricontent:"/alienform.cgi"; content:".\|./.\|."; reference:nessus,11027; reference:bugtraq,4983; classtype:web-application-attack; sid:1822; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI AlienForm af.cgi directory traversal attempt"; flow:established,to_server; uricontent:"/af.cgi"; content:".\|./.\|."; reference:nessus,11027; reference:bugtraq,4983; classtype:web-application-attack; sid:1823; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI alienform.cgi access"; flow:established,to_server; uricontent:"/alienform.cgi"; reference:nessus,11027; reference:bugtraq,4983; classtype:web-application-activity; sid:1824; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI AlienForm af.cgi access"; flow:established,to_server; uricontent:"/af.cgi"; reference:nessus,11027; reference:bugtraq,4983; classtype:web-application-activity; sid:1825; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC WEB-INF access"; flow:established,to_server; uricontent:"/WEB-INF./"; reference:nessus,11037; classtype:web-application-activity; sid:1826; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC tomcat servlet mapping cross site scripting attempt"; flow:established,to_server; uricontent:"/servlet/"; uricontent:"/org.apache."; reference:nessus,11041; reference:bugtraq,5193; classtype:web-application-attack; sid:1827; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC iPlanet Search directory traversal attempt"; flow:established,to_server; uricontent:"/search"; content:"NS-query-pat="; content:"../../"; reference:nessus,11043; reference:bugtraq,5191; classtype:web-application-attack; sid:1828; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC tomcat TroubleShooter servlet access"; flow:established,to_server; uricontent:"/examples/servlet/TroubleShooter"; reference:nessus,11046; reference:bugtraq,4575; classtype:web-application-activity; sid:1829; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC tomcat SnoopServlet servlet access"; flow:established,to_server; uricontent:"/examples/servlet/SnoopServlet"; reference:nessus,11046; reference:bugtraq,4575; classtype:web-application-activity; sid:1830; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC jigsaw dos attempt"; flow:established,to_server; uricontent:"/servlet/con"; reference:nessus,11047; classtype:web-application-attack; sid:1831; rev:2;)
+alert tcp $EXTERNAL_NET 80 -> $HOME_NET any (msg:"EXPERIMENTAL ICQ forced user addition"; flow:established,to_client; content:"Content-Type\: application/x-icq"; content:"[ICQ User]"; reference:bugtraq,3226; reference:cve,CAN-2001-1305; classtype:misc-activity; sid:1832; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-PHP PHP-Wiki cross site scripting attempt"; flow:established,to_server; uricontent:"/modules.php?"; uricontent:"name=Wiki"; nocase; uricontent:"<script"; nocase; reference:bugtraq,5254; classtype:web-application-attack; sid:1834; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC Macromedia SiteSpring cross site scripting attempt"; flow:established,to_server; uricontent:"/error/500error.jsp"; nocase; uricontent:"et="; uricontent:"<script"; nocase; reference:bugtraq,5249; classtype:web-application-attack; sid:1835; rev:2;)
+alert tcp $EXTERNAL_NET 22 -> $HOME_NET any (msg:"EXPERIMENTAL SSH server banner overflow"; flow:established,from_server; content:"SSH-"; offset:0; depth:4; content:!"|0a|"; within:600; reference:bugtraq,5287; classtype:misc-attack; sid:1838; rev:3;)
+alert tcp $EXTERNAL_NET 22 -> $HOME_NET any (msg:"EXPERIMENTAL IMAP login buffer overflow attempt"; flow:established,to_server; content:" LOGIN "; content:!"|0a|"; within:192; reference:nessus,10125; reference:cve,CVE-1999-0005; classtype:attempted-user; sid:1842; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC mailman cross site scripting attempt"; flow:established,to_server; uricontent:"/mailman/"; nocase; uricontent:"?"; uricontent:"info="; uricontent:"<script"; nocase; reference:bugtraq,5298; classtype:web-application-attack; sid:1839; rev:1;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"EXPERIMENTAL WEB-CLIENT javascript document.domain attempt"; flow:to_client,established; content:"document.domain("; nocase; classtype:attempted-user; reference:bugtraq,5346; sid:1840; rev:1;)
+alert tcp $EXTERNAL_NET $HTTP_PORTS -> $HOME_NET any (msg:"EXPERIMENTAL WEB-CLIENT javascript URL host spoofing attempt"; flow:to_client,established; content:"javascript\://"; nocase; classtype:attempted-user; reference:bugtraq,5293; sid:1841; rev:1;)
+
+# NOTES: this string should be within the first 3 bytes of the connection
+alert tcp $EXTERNAL_NET any -> $HOME_NET 33270 (msg:"EXPERIMENTAL BACKDOOR trinity connection attempt"; flow:to_server,established; content:"|21 40 23|"; offset:0; depth:3; reference:nessus,10501; reference:cve,CAN-2000-0138; classtype:attempted-admin; sid:1843; rev:2;)
+
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 143 (msg:"EXPERIMENTAL IMAP authenticate overflow attempt"; flow:established,to_server; content:" AUTHENTICATE "; nocase; content:!"|0a|"; within:1024; reference:nessus,10292; reference:cve,CVE-1999-0042; classtype:misc-attack; sid:1844; rev:3;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 143 (msg:"EXPERIMENTAL IMAP list overflow attempt"; flow:established,to_server; content:" LIST |22 22| "; nocase; content:!"|0a|"; within:1024; reference:nessus,10374; reference:cve,CAN-2000-0284; classtype:misc-attack; sid:1845; rev:4;)
+
+# NOTES: for this signature to be useful, you need to configure the http
+# decoder preprocessors to check for 5800 and 5802.  This is not done by
+# default, which is why this signature will be disabled by default when
+# it is moved into policy.rules
+alert tcp $EXTERNAL_NET any -> $HOME_NET 5800:5802 (msg:"EXPERIMENTAL POLICY vnc viewer java applet download attempt"; uricontent:"/vncviewer.jar"; reference:nessus,10758; classtype:misc-activity; sid:1846; rev:2;)
+
+
+# NOTES: this signature looks for access to common webalizer output directories.
+# Webalizer is a http server log reporting program.  By allowing anyone on the
+# internet to view the web access logs, attackers can gain information about
+# your customers that probably should not be made public.  webalizer had cross
+# site scripting bugs prior to version 2.01-09.
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC webalizer access"; flow:established,to_server; uricontent:"/webalizer/"; nocase; reference:nessus,10816; reference:cve,CAN-1999-0643; classtype:web-application-activity; sid:1847; rev:2;)
+
+# NOTES: this signature looks for someone accessing the directory webcart-lite.
+# webcart-lite allows users to access world readable plain text customer
+# information databases.  To correct this issue, users should make the
+# data directories and databases not world readable, move the files outside of
+# WEBROOT if possile, and verify that a compromise of customer information has
+# not occured.
+# SIMILAR SIGNATURES: sid:1125
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC webcart-lite access"; flow:to_server,established; uricontent:"/webcart-lite/"; nocase; reference:cve,CAN-1999-0610; reference:nessus,10298; classtype:web-application-activity; sid:1848; rev:1;)
+
+# NOTES: this signature looks for someone accessing the web application
+# "webfind.exe".  This application has a buffer overflow in the keywords
+# arguement.  An attacker can use this vulnerability to execute arbitrary
+# code on the web server.
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC webfind.exe access"; flow:to_server,established; uricontent:"/webfind.exe"; nocase; reference:cve,CAN-2000-0622; reference:nessus,10475; classtype:web-application-activity; sid:1849; rev:1;)
+
+
+# NOTES: this signature looks for someone accessing the web application
+# "way-board.cgi".  This application allows attackers to view arbitrary
+# files that are readable with the privilages of the web server.
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC way-board.cgi access"; flow:to_server,established; uricontent:"/way-board.cgi"; nocase; reference:nessus,10610; classtype:web-application-activity; sid:1850; rev:1;)
+
+
+# NOTES: this signature looks for someone accessing the file "active.log" via
+# a web server.  By allowing anyone on the internet to view the web access
+# logs, attackers can gain information about your customers that probably
+# should not be made public.
+#
+# This logfile is made available from the WebActive webserver.  This webserver
+# is no longer maintained and should be replaced with an activily maintained
+# webserver.  If converting to another webserver is not possible, remove read
+# access to this file.
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC active.log access"; flow:to_server,established; uricontent:"/active.log"; nocase; reference:nessus,10470; reference:cve,CAN-2000-0642; classtype:web-application-activity; sid:1851; rev:1;)
+
+
+# NOTES: this signature looks for someone accessing the file "robots.txt" via
+# web server.  This file is used to make web spider agents (including search
+# engines) more efficent.  robots.txt is often used to inform a web spider
+# which directories that the spider should ignore because the content may be
+# dynamic or restricted.  An attacker can use this information to gain insite
+# into directories that may have been deemed sensitive.
+#
+# Verify that the robots.txt does not include any sensitive information.
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC robots.txt access"; flow:to_server,established; uricontent:"/robots.txt"; nocase; reference:nessus,10302; classtype:web-application-activity; sid:1852; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"WEB-MISC robot.txt access"; flow:to_server,established; uricontent:"/robot.txt"; nocase; reference:nessus,10302; classtype:web-application-activity; sid:1857; rev:1;)
+
+
+
+
+# NOTES: add notes about wintrin00
+alert udp $EXTERNAL_NET any -> $HOME_NET 35555 (msg:"EXPERIMENTAL BACKDOOR win-trin00 connection attempt"; content:"png []..Ks l44"; offset:0; depth:14; reference:cve,CAN-2000-0138; reference:nessus,10307; classtype:attempted-admin; sid:1853; rev:2;)
+
+alert icmp $EXTERNAL_NET any <> $HOME_NET any (msg:"EXPERIMENTAL DDOS Stacheldraht handler->agent (niggahbitch)"; content:"niggahbitch"; itype:0; icmp_id:9015; reference:url,staff.washington.edu/dittrich/misc/stacheldraht.analysis; classtype:attempted-dos; sid:1854; rev:1;)
+alert icmp $HOME_NET any <> $EXTERNAL_NET any (msg:"DDOS Stacheldraht agent->handler (skillz)"; content:"skillz"; itype:0; icmp_id:6666; reference:url,staff.washington.edu/dittrich/misc/stacheldraht.analysis; classtype:attempted-dos; sid:1855; rev:1;)
+alert icmp $EXTERNAL_NET any <> $HOME_NET any (msg:"DDOS Stacheldraht handler->agent (ficken)"; content:"ficken"; itype:0; icmp_id:6667; reference:url,staff.washington.edu/dittrich/misc/stacheldraht.analysis; classtype:attempted-dos; sid:1856; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 8181 (msg:"EXPERIMENTAL WEB-MISC CISCO PIX Firewall Manager directory traversal attempt"; flow:to_server,established; uricontent:"/pixfir~1/how_to_login.html"; reference:bugtraq,691; reference:nessus,10819; classtype:misc-attack; sid:1858; rev:1;)
+
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 9090 (msg:"EXPERIMENTAL WEB-MISC Sun JavaServer default password login attempt"; flow:to_server,established; uricontent:"/servlet/admin"; content:"ae9f86d6beaa3f9ecb9a5b7e072a4138"; reference:nessus,10995; classtype:default-login-attempt; sid:1859; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 8080 (msg:"EXPERIMENTAL WEB-MISC Linksys router default password login attempt \(\:admin\)"; flow:to_server,established; content:"Authorization\: Basic OmFkbWlu"; reference:nessus,10999; classtype:default-login-attempt; sid:1860; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 8080 (msg:"EXPERIMENTAL WEB-MISC Linksys router default password login attempt \(admin\:admin\)";  flow:to_server,established; content:"Authorization\: "; nocase; content:" Basic "; nocase; content:" YWRtaW46YWRtaW4"; reference:nessus,10999; classtype:default-login-attempt; sid:1861; rev:2;)
+
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI mrtg.cgi directory traversal attempt"; flow:to_server,established; uricontent:"/mrtg.cgi"; content:"cfg=/../"; reference:nessus,11001; classtype:web-application-attack; sid:1862; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI mrtg.cgi access"; flow:to_server,established; uricontent:"/mrtg.cgi"; reference:nessus,11001; classtype:web-application-activity; sid:1863; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"EXPERIMENTAL FTP SITE NEWER attempt"; flow:to_server,established; content:"SITE "; nocase; content:" NEWER "; nocase; reference:cve,CVE-1999-0880; reference:nessus,10319; classtype:attempted-dos; sid:1864; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 8080 (msg:"EXPERIMENTAL WEB-CGI story.pl arbitrary file read attempt"; flow:to_server,established; uricontent:"/story.pl"; content:"next=../"; reference:nessus,10817; reference:cve,CVE-2001-0804; classtype:default-login-attempt; sid:1868; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 8080 (msg:"EXPERIMENTAL WEB-CGI story.pl access"; flow:to_server,established; uricontent:"/story.pl"; reference:nessus,10817; reference:cve,CVE-2001-0804; classtype:default-login-attempt; sid:1869; rev:1;)
+
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI siteUserMod.cgi access"; flow:to_server,established; uricontent:"/.cobalt/siteUserMod/siteUserMod.cgi"; reference:nessus,10253; reference:cve,CVE-2000-0117; classtype:web-application-activity; sid:1870; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC Oracle XSQLConfig.xml access"; flow:to_server,established; uricontent:"/XSQLConfig.xml"; reference:nessus,10855; reference:cve,CAN-2002-0568; classtype:web-application-activity; sid:1871; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC Oracle Dynamic Monitoring Services (dms) access"; flow:to_server,established; uricontent:"/dms0"; reference:nessus,10848; classtype:web-application-activity; sid:1872; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC globals.jsa access"; flow:to_server,established; uricontent:"/globals.jsa"; reference:nessus,10850; reference:cve,CAN-2002-0562; classtype:web-application-activity; sid:1873; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC Oracle Java Process Manager access"; flow:to_server,established; uricontent:"/oprocmgr-status"; reference:nessus,10851; classtype:web-application-activity; sid:1874; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI cgicso access"; flow:to_server,established; uricontent:"/cgicso"; reference:nessus,10779; reference:nessus,10780; classtype:web-application-activity; sid:1875; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI nph-publish.cgi access"; flow:to_server,established; uricontent:"/nph-publish.cgi"; reference:nessus,10164; reference:cve,CVE-1999-1177; classtype:web-application-activity; sid:1876; rev:1;)
+
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI printenv access"; flow:to_server,established; uricontent:"/printenv"; reference:nessus,10503; reference:cve,CVE-2000-0868; classtype:web-application-activity; sid:1877; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-CGI sdbsearch.cgi access"; flow:to_server,established; uricontent:"/sdbsearch.cgi"; reference:nessus,10503; reference:cve,CVE-2000-0868; classtype:web-application-activity; sid:1878; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS $HTTP_PORTS (msg:"EXPERIMENTAL WEB-MISC bad HTTP/1.1 request, potentual worm attack"; flow:to_server,established; content:"GET / HTTP/1.1|0d 0a 0d 0a|";  offset:0; depth:18; reference:url,securityresponse.symantec.com/avcenter/security/Content/2002.09.13.html; classtype:web-application-activity; sid:1881; rev:2;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 21 (msg:"EXPERIMENTAL FTP SITE CPWD overflow attempt"; flow:established,to_server; content:"SITE "; nocase; content:" CPWDi "; nocase; content:!"|0a|"; within:100; reference:bugtraq,5427; reference:cve,CAN-2002-0826; classtype:misc-attack; sid:1888; rev:1;)
+alert tcp $EXTERNAL_NET any -> $HTTP_SERVERS 443 (msg:"EXPERIMENTAL WEB-MISC OpenSSL Worm traffic"; flow:to_server,established;  content:"TERM=xterm"; nocase; classtype:web-application-attack; reference:url,www.cert.org/advisories/CA-2002-27.html; sid:1887; rev:1;)
+alert udp $EXTERNAL_NET 2002 -> $HTTP_SERVERS 2002 (msg:"EXPERIMENTAL WORM slapper admin traffic"; content:"|0000 4500 0045 0000 4000|"; offset:0; depth:10; classtype:trojan-activity; reference:url,www.cert.org/advisories/CA-2002-27.html; reference:url,isc.incidents.org/analysis.html?id=167; sid:1889; rev:2;)
+
+alert udp $EXTERNAL_NET any -> $HOME_NET 1024: (msg: "EXPERIMENTAL RPC status GHBN format string attack"; content: "|00 01 86 B8|"; content: "|00 00 00 02|"; distance: 4; within: 4; content: "%x %x"; distance: 16; within: 256;  sid: 1890; rev: 1; reference:bugtraq,1480; reference: cve,CVE-2000-0666; classtype: misc-attack;)
+alert tcp $EXTERNAL_NET any -> $HOME_NET 1024: (msg: "EXPERIMENTAL RPC status GHBN format string attack"; flow: to_server, established; content: "|00 01 86 B8|"; content: "|00 00 00 02|"; distance: 4; within: 4; content: "%x %x"; distance: 16; within: 256;  sid: 1891; rev: 1; reference:bugtraq,1480; reference: cve,CVE-2000-0666; classtype: misc-attack;)
+

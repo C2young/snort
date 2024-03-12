@@ -1,0 +1,65 @@
+$Id: RULES.todo,v 1.11 2002/05/30 20:10:03 cazz Exp $
+
+RULES todo
+
+- BUGTRAQ 1199.  Old sig was sid:876, which doesn't actually catch exploit 
+  attempts.  
+
+- review sid:973.  where did this come from?  is it really bid 1448?
+
+- uh, sid:1044.  What are we really looking for?
+
+- sid:1143, 1144.  what the hell does /// do?  
+
+- sid:1147 - cat%20.  can it be done via post?
+
+- sid:1231 - doesnt seem to be bid:2808.  Whats this actually from?
+
+- PGPMail.pl vulnerablity
+  Message-Id: <0111291925580K.19881@ks40.eastnet.gatech.edu> sent to vuln-dev
+
+- sid:1377,1378 - add reference:cve,CAN-2001-0550
+
+- write sig for http://www.tempest.com.br/advisories/01-2001.html
+
+- bitchslap securiteam for resending other people's alerts without passing 
+  on any of the useful information.  
+
+- write sig for AOL 3.3 and prior AUTH Basic overflow
+
+- check on sid:895's group.  web-coldfusion instead of web-cgi?  
+  (Pointed out by Justin Mitzimberg <JMitzimberg@bco.com>)
+
+- rewrite the zillion of deepthroat 3.1 sigs and try and bring the count down 
+  to oh, say... 2
+
+- sid:340,341  What vulnerabilities are these?
+
+- sid:349.  It seems to suck badly.  How about 
+  content:"MKD "; offset:0; depth:4; dsize:>50;
+
+- sid:1229.  Where does "CWD ..." come from? -- warez kiddies (cmg)
+
+- BID 3744.  PHPFileExchange, Find the exploit, write a sig 
+
+- BID 3988.  NetJuke.  find exploit, write a sig
+
+- need FTP PORT bouncing signature
+
+-- did the QT stuiff
+
+- CAN-2000-1176
+
+- PIMP http://cvs.nessus.org/cgi-bin/cvsweb.cgi/~checkout~/nessus-plugins/scripts/pimp.nasl
+- SMB reg key smb_reg_ras_access.nasl
+
+- axent_raptor_dos.nasl
+
+- DNS ZXFR  sig
+
+- finished nessus sigs up to bonk.nasl, start with that and finish the rest
+- DCE sigs
+- verify dtspcd.nasl
+
+- convert all application ports to $APPNAME_PORTS if it makes sense for that
+  application

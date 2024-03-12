@@ -1,0 +1,224 @@
+Introduction.
+   The snortSnmpPlugin enables snort to send snmp alerts to network
+   managemement systems (NMS). The alerts can be traps (the alert will 
+   not be acknowledged by the receiver) or informs (the alert will be
+   acknowledged by the receiver ). 
+   This adds significant power to the NMS by allowing it to monitor the
+   security of the network. It also allows the snort sensor to exploit
+   the features that are built into existing network management systems. 
+
+Requirements:
+   The plugin requires the net-snmp libraries and header files.  
+   
+   You will need to download and install the ucd-snmp (netSnmp)
+   package before you try to install this plugin.
+   The URL is http://net-snmp.sourceforge.net/
+
+   You will need the latest snort source distribution.
+
+Activation Steps:
+     
+    NOTE: That the files in contribe/MIBS need to be referred to by
+    snmp applications.
+
+          [Otherwise the OID-to-name translation will not take place]
+          refer to the snmpcmd manpages [do 'man snmpcmd'] for further details.
+      
+ 1. follow the usual steps to build the package
+        
+          ./configure --with-snmp
+          make
+          su
+          make install 
+
+    NOTE-WELL: The '--with-snmp' option is required if you want to build
+               with the snortSnmpPlugin
+
+    NOTE: the compiler may complain about the non-availability of some 
+          libraries used by libsnmp. You may try configuring with 
+          ./configure --with-snmp --with-openssl
+ 2. Prepare the snort.conf which defines the snort run-time configuration
+    Important: You need to enable the SnmpTrap plugin in the snort.conf
+               or whatever configuration file you pass on to snort.
+    The trap_snmp plugin requires several parameters and these will need 
+    to be specified in the trap_snmp activation line in the configuration
+    file (snort.conf).
+    The parameters depend on the Snmpversion that is used (specified)
+    For the SNMPv2c case the parameters will be as follows
+      alert, <sensorID>, [NotificationOptions] ,
+      {trap|inform} -v <SnmpVersion> -p <portNumber> <hostName> <community>
+    
+    For SNMPv2c traps with MD5 digest based packetPrint generation the 
+    trap_snmp activation line will be as follows
+     
+    output trap_snmp: alert, 7, cpm,trap -v 2c -p 162 myTrapListener myCommunity
+     
+    For SNMPv2c informs with the 'compact' notification option
+   
+    output trap_snmp: alert, 7, c,inform -v 2c -p 162 myTrapListener myCommunity
+
+    For details on configuring the trap_snmp plugin see the notes below and
+    in the accompanying snort.conf. 
+    [You may also refer to the preliminary draft of the snort-snmp guide at 
+     http://www.cysols.com/contrib/snortsnmp/snortSnmpGuide.html]
+ 
+  You are all set. Start snort !
+  If you have problems / queries / suggestion - mail to snortSnmp@cysols.com
+
+
+   Note1. The trap_snmp plugin accepts the following options 
+          [c],[p[m|s]]                                              
+          where,
+              c : Generate compact notifications. 
+                 (Saves on bandwidth by not reporting MOs for which 
+                  values are unknown, not available or, not applicable. 
+                  For details see below.) 
+                  By default this option is reset.
+              p : Generate a print of the invariant part of the 
+                  offending packet. This can be used to track the packet 
+                  across the Internet. If you do not know what this is 
+                  about you probably do not need this. 
+                  By default this option is reset.                  
+              m : Use the MD5 algorithm to generate the packet print. 
+                  By default this algorithm is used. If you do not know 
+                  what this is about you probably do not need this.  
+              s : Use the SHA1 algorithm to generate the packet print.
+                  If you do not know
+                  what this is about you probably do not need this.
+ 
+   Note2. As of now SNMPv1 traps are not supported. SNMPv2 and above should 
+          work. You will need to specify the parameters correctly.
+          The paremeters after the trap[inform] are pretty much the same as 
+          those that are accepted on the commandline by netSnmp applications.
+          To see the options and features do a 'man snmptrapd'.
+ 
+          If you choose to send traps [informs] - you should ensure that a 
+          SnmpTrapListener is listening for the traps[informs] on the 
+          destination (<hostName>) at the specified port (<portNumber>).
+          If Snmptrapd is not running - you can try 
+                    snmptrapd -P -p <portNo> -Os 
+          on <hostname>. This will work if you have the NetSnmp package 
+          installed on <hostname>. 
+          The received alerts will get printed on the console. 
+
+
+  Note3. Description of the notifications sent by snortSnmpPlugin.
+
+    The following notifications are supported: 
+          sidaAlertGeneric-2
+              This is the notification sent when no specific notification
+              is found for the event.
+          sidaAlertScanStatus-2
+              This notification reports that a scan.
+              is detected, in progress or terminated.
+              The sidaScanEventStatus MO indicates the status of the
+              scan - whether the start of a scan is detected,
+              a scan is in progress or, a detected scan has
+              terminated. The periodicity of the scan in progress
+              alerts is implementation dependent.
+  
+  
+    The MOs in the sidaAlertGeneric-2 are 
+      sidaAlertTimeStamp,                       M  (M:Mandatory, O:Optional)  
+      sidaAlertMsg,                             M
+      sidaAlertImpact                           M
+  
+      sidaSensorID                              O
+      sidaAlertID                               O
+      sidaAlertActionsTaken,                    O
+      sidaAlertMoreInfo,                        O
+      sidaSensorAddressType,                    O 
+      sidaSensorAddress,                        O
+      sidaAlertSrcAddressType,                  O
+      sidaAlertSrcAddress,                      O
+      sidaAlertDstAddressType,                  O
+      sidaAlertDstAddress,                      O
+      sidaAlertSrcPort,                         O
+      sidaAlertDstPort,                         O
+      sidaAlertEventPriority                    O
+      sidaAlertSrcMacAddress                    O
+      sidaAlertDstMacAddress                    O
+      sidaAlertProto                            O 
+      sidaAlertRuleID                           O
+      sidaAlertRuleRevision                     O
+      sidaAlertPacketPrint                      O
+  
+  The MOs in the sidaAlertScanStatus-2 are 
+  
+      sidaAlertTimeStamp,                       M (M:Mandatory, O:Optional) 
+      sidaAlertMsg,                             M
+      sidaAlertImpact                           M
+      sidaAlertScanType                         M
+      sidaAlertEventStatus                      M
+  
+      sidaSensorID   ,                          O 
+      sidaAlertID    ,                          O 
+      sidaAlertActionsTaken,                    O
+      sidaAlertMoreInfo                         O
+      sidaSensorAddressType,                    O 
+      sidaSensorAddress,                        O
+      sidaAlertSrcAddressType,                  O
+      sidaAlertSrcAddress,                      O
+      sidaAlertDstAddressType,                  O
+      sidaAlertDstAddress,                      O
+      sidaAlertSrcPort,                         O
+      sidaAlertDstPort,                         O
+      sidaAlertDstAddressList,                  O
+      sidaAlertDstPortList,                     O
+      sidaAlertEventPriority                    O 
+      sidaAlertScanDuration,                    O
+      sidaAlertScannedHosts,                    O
+      sidaAlertTCPScanCount,                    O
+      sidaAlertUDPScanCount,                    O
+      sidaAlertSrcMacAddress                    O
+      sidaAlertDstMacAddress                    O
+      sidaAlertProto                            O
+      sidaAlertRuleID                           O
+      sidaAlertRuleRevision                     O
+      sidaAlertPacketPrint                      O
+  
+  
+  Note4: Mandatory MOs and Optional MOs 
+  
+      o Two categories of MOs are defined for the notifications.
+        The mandatory MOs will *always* be 
+        included in the notification and in the same order as in 
+        which they appear in the definition of the corresponding 
+        NOTIFICATION object in the SNORT-ID-ALERT-MIB.
+      o If the true value of a mandatory MO is unavailable 
+        (or unknown) an appropriate value will be assigned 
+        to the MO to indicate that. [Refer to the  
+        SNORT-ID-ALERT-MIB definitions in the MIBs directory 
+        for the default values of the MOs]
+      o The handling of the optional MOs depends on the trap_snmp 
+        plugin options.
+         - By default, all the MOs will be present in the 
+           notification. If the true value of an MO is not available
+           or is unknown, a preassigned value will be supplied to 
+           to indicate that. The place and order of the MOs 
+           in the notification is fixed.   
+           [These notifications have the advantages of being fixed 
+           format and the disadvantage of being unnecessarily
+           large.]   
+         - if the compact option 'c' is given as a parameter 
+           to the snmptrap-plugin, the MOs for which the 
+           values are unknown or not available will not 
+           be present in the notification. The ordering of the MOs
+           does not change - but the place of the MOs may 
+           change. [ These notifications have the advantage of being
+           compact (there are no MOs without meaningful values
+           in the notification) and the disadvantage of being
+           variable format.  (variable format should
+           not be a problem as an SNMP notifications always 
+           contains the information in MO-Value pairs)] 
+
+Acknowledgments:
+  The following have helped with suggestions,comments,patches and 
+  encouragement. Let me know if I have left out anybody.
+
+      Mariusz Woloszyn
+      Juergen Schoenwaelder
+      Frank
+      All users.
+
+   
